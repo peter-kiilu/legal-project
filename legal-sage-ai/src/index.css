@@ -1,0 +1,256 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Legal Sage - Modern Legal AI Design System
+   A sophisticated color palette inspired by trust, authority, and innovation.
+   Primary: Deep indigo/navy - represents trust and professionalism
+   Accent: Vibrant teal/cyan - represents innovation and AI
+   Secondary: Warm gold accents - represents excellence and achievement
+*/
+
+@layer base {
+  :root {
+    /* Light Mode - Clean, Professional with Subtle Warmth */
+    --background: 220 20% 97%;
+    --foreground: 224 71% 10%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 224 71% 10%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 224 71% 10%;
+
+    /* Primary - Deep Indigo Blue */
+    --primary: 231 48% 48%;
+    --primary-foreground: 0 0% 100%;
+
+    /* Secondary - Soft Blue-Gray */
+    --secondary: 220 14% 92%;
+    --secondary-foreground: 224 71% 10%;
+
+    /* Muted - Subtle gray with blue undertone */
+    --muted: 220 14% 94%;
+    --muted-foreground: 220 9% 46%;
+
+    /* Accent - Vibrant Teal */
+    --accent: 173 58% 39%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 220 13% 88%;
+    --input: 220 13% 88%;
+    --ring: 231 48% 48%;
+
+    --radius: 0.75rem;
+
+    /* Sidebar - Slightly darker for depth */
+    --sidebar-background: 224 71% 10%;
+    --sidebar-foreground: 220 14% 92%;
+    --sidebar-primary: 173 58% 50%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 224 60% 15%;
+    --sidebar-accent-foreground: 220 14% 92%;
+    --sidebar-border: 224 60% 18%;
+    --sidebar-ring: 173 58% 50%;
+
+    /* Custom accent colors for feature cards */
+    --legal-blue: 231 48% 48%;
+    --legal-teal: 173 58% 39%;
+    --legal-purple: 263 70% 58%;
+    --legal-orange: 25 95% 53%;
+    --legal-green: 142 71% 40%;
+    --legal-gold: 45 93% 47%;
+  }
+
+  .dark {
+    /* Dark Mode - Rich, Deep, Premium Feel */
+    --background: 224 71% 4%;
+    --foreground: 220 14% 96%;
+
+    --card: 224 60% 8%;
+    --card-foreground: 220 14% 96%;
+
+    --popover: 224 60% 8%;
+    --popover-foreground: 220 14% 96%;
+
+    /* Primary - Bright Indigo for dark mode */
+    --primary: 231 60% 60%;
+    --primary-foreground: 224 71% 4%;
+
+    /* Secondary - Deep blue-gray */
+    --secondary: 224 50% 15%;
+    --secondary-foreground: 220 14% 96%;
+
+    /* Muted */
+    --muted: 224 50% 12%;
+    --muted-foreground: 220 9% 60%;
+
+    /* Accent - Vibrant Teal */
+    --accent: 173 58% 45%;
+    --accent-foreground: 224 71% 4%;
+
+    --destructive: 0 62% 45%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 224 50% 16%;
+    --input: 224 50% 16%;
+    --ring: 231 60% 60%;
+
+    /* Sidebar */
+    --sidebar-background: 224 71% 6%;
+    --sidebar-foreground: 220 14% 92%;
+    --sidebar-primary: 173 58% 50%;
+    --sidebar-primary-foreground: 224 71% 4%;
+    --sidebar-accent: 224 60% 12%;
+    --sidebar-accent-foreground: 220 14% 92%;
+    --sidebar-border: 224 50% 14%;
+    --sidebar-ring: 173 58% 50%;
+
+    /* Custom accent colors for dark mode */
+    --legal-blue: 231 60% 65%;
+    --legal-teal: 173 58% 50%;
+    --legal-purple: 263 70% 65%;
+    --legal-orange: 25 95% 60%;
+    --legal-green: 142 71% 50%;
+    --legal-gold: 45 93% 55%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  /* Smooth scrolling */
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+@layer components {
+  /* Glass effect for cards */
+  .glass {
+    @apply bg-white/80 dark:bg-card/80 backdrop-blur-lg;
+  }
+
+  /* Gradient text */
+  .gradient-text {
+    @apply bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent;
+    background-size: 200% auto;
+  }
+
+  /* Gradient backgrounds */
+  .gradient-primary {
+    @apply bg-gradient-to-br from-primary to-accent;
+  }
+
+  .gradient-hero {
+    @apply bg-gradient-to-br from-background via-background to-muted/50;
+  }
+
+  /* Feature card hover effects */
+  .feature-card {
+    @apply transition-all duration-300 hover:shadow-2xl hover:-translate-y-1;
+  }
+
+  /* Glow effects */
+  .glow-primary {
+    box-shadow: 0 0 40px -10px hsl(var(--primary) / 0.5);
+  }
+
+  .glow-accent {
+    box-shadow: 0 0 40px -10px hsl(var(--accent) / 0.5);
+  }
+
+  /* Animated gradient border */
+  .animated-border {
+    position: relative;
+  }
+
+  .animated-border::before {
+    content: "";
+    position: absolute;
+    inset: -2px;
+    background: linear-gradient(
+      45deg,
+      hsl(var(--primary)),
+      hsl(var(--accent)),
+      hsl(var(--legal-purple)),
+      hsl(var(--primary))
+    );
+    background-size: 300% 300%;
+    border-radius: inherit;
+    z-index: -1;
+    animation: gradient-rotate 4s ease infinite;
+  }
+
+  @keyframes gradient-rotate {
+    0%,
+    100% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+  }
+
+  /* Subtle pattern overlay */
+  .pattern-dots {
+    background-image: radial-gradient(
+      hsl(var(--primary) / 0.1) 1px,
+      transparent 1px
+    );
+    background-size: 20px 20px;
+  }
+
+  /* Loading shimmer */
+  .shimmer {
+    background: linear-gradient(
+      90deg,
+      hsl(var(--muted)) 0%,
+      hsl(var(--muted-foreground) / 0.1) 50%,
+      hsl(var(--muted)) 100%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.5s ease-in-out infinite;
+  }
+
+  @keyframes shimmer {
+    0% {
+      background-position: 200% 0;
+    }
+    100% {
+      background-position: -200% 0;
+    }
+  }
+}
+
+@layer utilities {
+  /* Text shadow for headings */
+  .text-shadow {
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Smooth transitions */
+  .transition-smooth {
+    @apply transition-all duration-300 ease-out;
+  }
+
+  /* Hide scrollbar but allow scrolling */
+  .scrollbar-hidden {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hidden::-webkit-scrollbar {
+    display: none;
+  }
+}
