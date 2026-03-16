@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { MessageSquare, Send, Bot, User, Sparkles, Info } from 'lucide-react';
+import { MessageSquare, Send, Bot, User, Sparkles, Info, Plus, History, Trash2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import ReactMarkdown from 'react-markdown';
 
@@ -11,6 +11,14 @@ interface Message {
   content: string;
   sender: 'user' | 'assistant';
   timestamp: Date;
+}
+
+interface ChatSession {
+  id: string;
+  title: string;
+  messages: { role: string; content: string; timestamp: string }[];
+  created_at: string;
+  updated_at: string;
 }
 
 const LegalAssistant = () => {
@@ -24,8 +32,121 @@ const LegalAssistant = () => {
   ]);
   const [inputMessage, setInputMessage] = useState('');
   const [isTyping, setIsTyping] = useState(false);
+  const [sessionId, setSessionId] = useState<string | null>(null);
+  const [sessions, setSessions] = useState<ChatSession[]>([]);
+  const [showHistory, setShowHistory] = useState(true);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
+
+  // Load sessions on mount
+  useEffect(() => {
+    loadSessions();
+    // Check for existing session in localStorage
+    const savedSessionId = localStorage.getItem('currentSessionId');
+    if (savedSessionId) {
+      loadSession(savedSessionId);
+    }
+  }, []);
+
+  const loadSessions = async () => {
+    try {
+      const response = await fetch('/api/sessions');
+      if (response.ok) {
+        const data = await response.json();
+        setSessions(data.sessions || []);
+      }
+    } catch (error) {
+      console.error('Failed to load sessions:', error);
+    }
+  };
+
+  const loadSession = async (id: string) => {
+    try {
+      const response = await fetch(`/api/sessions/${id}`);
+      if (response.ok) {
+        const session = await response.json();
+        setSessionId(session.id);
+        localStorage.setItem('currentSessionId', session.id);
+        
+        // Convert session messages to component format
+        if (session.messages && session.messages.length > 0) {
+          const formattedMessages: Message[] = session.messages.map((msg: any, index: number) => ({
+            id: `${session.id}-${index}`,
+            content: msg.content,
+            sender: msg.role === 'user' ? 'user' : 'assistant',
+            timestamp: new Date(msg.timestamp)
+          }));
+          setMessages(formattedMessages);
+        } else {
+          // Reset to welcome message if no messages
+          setMessages([{
+            id: '1',
+            content: "Hello! I'm your AI legal assistant. I can answer questions based on the documents you've uploaded. How can I help you today?",
+            sender: 'assistant',
+            timestamp: new Date()
+          }]);
+        }
+      }
+    } catch (error) {
+      console.error('Failed to load session:', error);
+    }
+  };
+
+  const createNewSession = async () => {
+    try {
+      const response = await fetch('/api/sessions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({})
+      });
+      
+      if (response.ok) {
+        const session = await response.json();
+        setSessionId(session.id);
+        localStorage.setItem('currentSessionId', session.id);
+        setMessages([{
+          id: '1',
+          content: "Hello! I'm your AI legal assistant. I can answer questions based on the documents you've uploaded. How can I help you today?",
+          sender: 'assistant',
+          timestamp: new Date()
+        }]);
+        loadSessions();
+        toast({
+          title: "New Chat",
+          description: "Started a new conversation",
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to create new session",
+        variant: "destructive"
+      });
+    }
+  };
+
+  const deleteSession = async (id: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    try {
+      const response = await fetch(`/api/sessions/${id}`, { method: 'DELETE' });
+      if (response.ok) {
+        loadSessions();
+        if (id === sessionId) {
+          setSessionId(null);
+          localStorage.removeItem('currentSessionId');
+          setMessages([{
+            id: '1',
+            content: "Hello! I'm your AI legal assistant. I can answer questions based on the documents you've uploaded. How can I help you today?",
+            sender: 'assistant',
+            timestamp: new Date()
+          }]);
+        }
+        toast({ title: "Deleted", description: "Chat session deleted" });
+      }
+    } catch (error) {
+      toast({ title: "Error", description: "Failed to delete session", variant: "destructive" });
+    }
+  };
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -37,6 +158,26 @@ const LegalAssistant = () => {
 
   const sendMessage = async () => {
     if (!inputMessage.trim()) return;
+
+    // Create session if not exists
+    let currentSessionId = sessionId;
+    if (!currentSessionId) {
+      try {
+        const response = await fetch('/api/sessions', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({})
+        });
+        if (response.ok) {
+          const session = await response.json();
+          currentSessionId = session.id;
+          setSessionId(session.id);
+          localStorage.setItem('currentSessionId', session.id);
+        }
+      } catch (error) {
+        console.error('Failed to create session');
+      }
+    }
 
     const userMessage: Message = {
       id: Date.now().toString(),
@@ -58,6 +199,7 @@ const LegalAssistant = () => {
         },
         body: JSON.stringify({
           query: currentInput,
+          session_id: currentSessionId,
           history: messages.map(m => ({
             role: m.sender === 'user' ? 'human' : 'assistant',
             content: m.content
@@ -79,6 +221,7 @@ const LegalAssistant = () => {
       };
 
       setMessages(prev => [...prev, assistantMessage]);
+      loadSessions(); // Refresh session list to update titles
     } catch (error) {
       toast({
         title: "Error",
@@ -123,9 +266,66 @@ const LegalAssistant = () => {
         </div>
       </div>
 
-      <div className="grid lg:grid-cols-4 gap-6">
+      <div className="grid lg:grid-cols-5 gap-6">
+        {/* Conversation History Sidebar */}
+        {showHistory && (
+          <Card className="lg:col-span-1 border-0 shadow-lg h-fit max-h-[600px] overflow-hidden flex flex-col">
+            <CardHeader className="pb-3 bg-gradient-to-r from-slate-100 to-slate-50 dark:from-slate-800 dark:to-slate-900">
+              <CardTitle className="text-sm flex items-center justify-between gap-2">
+                <div className="flex items-center gap-2">
+                  <History className="h-4 w-4 text-orange-600" />
+                  Past Chats
+                </div>
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  className="h-7 w-7 p-0 hover:bg-orange-100 dark:hover:bg-orange-900/30"
+                  onClick={createNewSession}
+                  title="New Chat"
+                >
+                  <Plus className="h-4 w-4" />
+                </Button>
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="p-2 overflow-y-auto flex-1 max-h-[480px]">
+              {sessions.length === 0 ? (
+                <p className="text-xs text-muted-foreground text-center py-4">
+                  No conversations yet
+                </p>
+              ) : (
+                <div className="space-y-1">
+                  {sessions.slice(0, 10).map((session) => (
+                    <div
+                      key={session.id}
+                      onClick={() => loadSession(session.id)}
+                      className={`group p-2 rounded-lg cursor-pointer transition-all text-xs hover:bg-orange-50 dark:hover:bg-orange-950/30 flex items-center justify-between ${
+                        session.id === sessionId ? 'bg-orange-100 dark:bg-orange-900/40 border-l-2 border-orange-500' : ''
+                      }`}
+                    >
+                      <div className="flex-1 min-w-0">
+                        <p className="font-medium truncate">{session.title}</p>
+                        <p className="text-muted-foreground truncate">
+                          {new Date(session.updated_at).toLocaleDateString()}
+                        </p>
+                      </div>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="h-6 w-6 p-0 opacity-0 group-hover:opacity-100 hover:bg-red-100 dark:hover:bg-red-900/30"
+                        onClick={(e) => deleteSession(session.id, e)}
+                      >
+                        <Trash2 className="h-3 w-3 text-red-500" />
+                      </Button>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        )}
+
         {/* Chat Area */}
-        <Card className="lg:col-span-3 border-0 shadow-lg overflow-hidden">
+        <Card className={`${showHistory ? 'lg:col-span-3' : 'lg:col-span-4'} border-0 shadow-lg overflow-hidden`}>
           <CardHeader className="bg-gradient-to-r from-orange-500 to-orange-600 text-white py-4">
             <CardTitle className="text-lg flex items-center gap-2">
               <Sparkles className="h-5 w-5" />
@@ -136,8 +336,8 @@ const LegalAssistant = () => {
             </CardTitle>
           </CardHeader>
           <CardContent className="p-0">
-            {/* Messages */}
-            <div className="h-[450px] overflow-y-auto p-4 space-y-4 bg-gradient-to-b from-orange-50/30 to-transparent dark:from-orange-950/10">
+            {/* Messages - Limited height for testing */}
+            <div className="h-[400px] overflow-y-auto p-4 space-y-4 bg-gradient-to-b from-orange-50/30 to-transparent dark:from-orange-950/10">
               {messages.map((message) => (
                 <div
                   key={message.id}

@@ -15,6 +15,61 @@ llm = None
 OLLAMA_MODEL = "llama3.2:1b"  # Change to qwen2:1.5b if preferred
 OLLAMA_EMBED_MODEL = "nomic-embed-text"
 
+# Conversational response patterns
+GREETING_PATTERNS = ["hi", "hello", "hey", "greetings", "good morning", "good afternoon", "good evening", "howdy", "sup", "what's up"]
+IDENTITY_PATTERNS = ["who are you", "what are you", "what is your name", "your name", "tell me about yourself"]
+CREATOR_PATTERNS = ["who created you", "who made you", "who built you", "who developed you", "your creator", "your developer"]
+
+# Predefined responses
+GREETING_RESPONSE = """Hello! 👋 I'm your AI Legal Assistant powered by Legal Sage AI. I'm here to help you with:
+
+• **Document Analysis** - Upload and analyze legal documents
+• **Case Predictions** - Get insights on potential case outcomes
+• **Legal Q&A** - Ask questions about your uploaded documents
+
+How can I assist you today?"""
+
+IDENTITY_RESPONSE = """I am **Legal Sage AI**, an intelligent legal assistant designed to help you navigate legal documents and provide insights.
+
+**My Capabilities:**
+- 📄 Analyze legal documents (PDFs, Word docs, text files)
+- ⚖️ Predict case outcomes based on Kenyan law
+- 💬 Answer questions about your uploaded documents
+- 📋 Summarize complex legal texts
+
+I use advanced AI technology to provide accurate and helpful legal assistance. Upload a document to get started!"""
+
+CREATOR_RESPONSE = """I was created by **Musila Peter**, a talented student at the **University of Embu** pursuing **BSc. Information Technology**.
+
+**About My Creator:**
+- 🎓 University of Embu, BSc. IT Student
+- 📊 Data-driven researcher
+- 🚀 Visionary tech student passionate about AI and legal technology
+- 💡 Innovator bridging technology and legal services
+
+Musila Peter developed Legal Sage AI to make legal assistance more accessible through cutting-edge AI technology."""
+
+def is_conversational_query(query: str) -> tuple[bool, str]:
+    """Check if query is a conversational/greeting type and return appropriate response."""
+    query_lower = query.lower().strip()
+    
+    # Check for greetings
+    for pattern in GREETING_PATTERNS:
+        if query_lower == pattern or query_lower.startswith(pattern + " ") or query_lower.startswith(pattern + "!") or query_lower.startswith(pattern + ","):
+            return True, GREETING_RESPONSE
+    
+    # Check for identity questions
+    for pattern in IDENTITY_PATTERNS:
+        if pattern in query_lower:
+            return True, IDENTITY_RESPONSE
+    
+    # Check for creator questions
+    for pattern in CREATOR_PATTERNS:
+        if pattern in query_lower:
+            return True, CREATOR_RESPONSE
+    
+    return False, ""
+
 def get_llm():
     global llm
     if llm is None:
@@ -113,6 +168,11 @@ def get_prediction(case_details: str) -> str:
 def chat_with_doc(query: str, history: list) -> str:
     global vector_store
     try:
+        # First check if this is a conversational query (greetings, identity, creator)
+        is_conversational, response = is_conversational_query(query)
+        if is_conversational:
+            return response
+        
         if vector_store is None:
             # Try to load existing db
             if os.path.exists("./chroma_db"):
