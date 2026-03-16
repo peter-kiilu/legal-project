@@ -1,0 +1,706 @@
+
+<!DOCTYPE html>
+
+<html class="no-js" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<meta content="An intelligent legal document analysis platform powered by AI." name="description"/>
+<link href=".." rel="prev"/>
+<link href="../system_architecture/" rel="next"/>
+<link href="../assets/images/favicon.png" rel="icon"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.7.5" name="generator"/>
+<title>Developer Guide - Legal Sage AI</title>
+<link href="../assets/stylesheets/main.484c7ddc.min.css" rel="stylesheet"/>
+<link href="../assets/stylesheets/palette.ab4e12ef.min.css" rel="stylesheet"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
+<style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+<script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+</head>
+<body data-md-color-accent="indigo" data-md-color-primary="indigo" data-md-color-scheme="default" dir="ltr">
+<input autocomplete="off" class="md-toggle" data-md-toggle="drawer" id="__drawer" type="checkbox"/>
+<input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
+<label class="md-overlay" for="__drawer"></label>
+<div data-md-component="skip">
+<a class="md-skip" href="#legal-sage-ai-developer-documentation">
+          Skip to content
+        </a>
+</div>
+<div data-md-component="announce">
+</div>
+<header class="md-header" data-md-component="header">
+<nav aria-label="Header" class="md-header__inner md-grid">
+<a aria-label="Legal Sage AI" class="md-header__button md-logo" data-md-component="logo" href=".." title="Legal Sage AI">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+</a>
+<label class="md-header__button md-icon" for="__drawer">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+</label>
+<div class="md-header__title" data-md-component="header-title">
+<div class="md-header__ellipsis">
+<div class="md-header__topic">
+<span class="md-ellipsis">
+            Legal Sage AI
+          </span>
+</div>
+<div class="md-header__topic" data-md-component="header-topic">
+<span class="md-ellipsis">
+            
+              Developer Guide
+            
+          </span>
+</div>
+</div>
+</div>
+<form class="md-header__option" data-md-component="palette">
+<input aria-hidden="true" class="md-option" data-md-color-accent="indigo" data-md-color-media="(prefers-color-scheme: light)" data-md-color-primary="indigo" data-md-color-scheme="default" id="__palette_0" name="__palette" type="radio"/>
+<input aria-hidden="true" class="md-option" data-md-color-accent="indigo" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-primary="indigo" data-md-color-scheme="slate" id="__palette_1" name="__palette" type="radio"/>
+</form>
+<script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+<label class="md-header__button md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+</label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input aria-label="Search" autocapitalize="off" autocomplete="off" autocorrect="off" class="md-search__input" data-md-component="search-query" name="query" placeholder="Search" required="" spellcheck="false" type="text"/>
+<label class="md-search__icon md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+</label>
+<nav aria-label="Search" class="md-search__options">
+<button aria-label="Clear" class="md-search__icon md-icon" tabindex="-1" title="Clear" type="reset">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+</button>
+</nav>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix="" tabindex="0">
+<div class="md-search-result" data-md-component="search-result">
+<div class="md-search-result__meta">
+            Initializing search
+          </div>
+<ol class="md-search-result__list" role="presentation"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+</nav>
+</header>
+<div class="md-container" data-md-component="container">
+<nav aria-label="Tabs" class="md-tabs" data-md-component="tabs">
+<div class="md-grid">
+<ul class="md-tabs__list">
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="..">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+</li>
+<li class="md-tabs__item md-tabs__item--active">
+<a class="md-tabs__link" href="./">
+        
+  
+  
+    
+  
+  Developer Guide
+
+      </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../system_architecture/">
+        
+  
+  
+    
+  
+  Architecture
+
+      </a>
+</li>
+</ul>
+</div>
+</nav>
+<main class="md-main" data-md-component="main">
+<div class="md-main__inner md-grid">
+<div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Navigation" class="md-nav md-nav--primary md-nav--lifted" data-md-level="0">
+<label class="md-nav__title" for="__drawer">
+<a aria-label="Legal Sage AI" class="md-nav__button md-logo" data-md-component="logo" href=".." title="Legal Sage AI">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+</a>
+    Legal Sage AI
+  </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="..">
+<span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active">
+<input class="md-nav__toggle md-toggle" id="__toc" type="checkbox"/>
+<label class="md-nav__link md-nav__link--active" for="__toc">
+<span class="md-ellipsis">
+    
+  
+    Developer Guide
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<a class="md-nav__link md-nav__link--active" href="./">
+<span class="md-ellipsis">
+    
+  
+    Developer Guide
+  
+
+    
+  </span>
+</a>
+<nav aria-label="Table of contents" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#table-of-contents">
+<span class="md-ellipsis">
+      
+        Table of Contents
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#project-overview">
+<span class="md-ellipsis">
+      
+        Project Overview
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#technology-stack">
+<span class="md-ellipsis">
+      
+        Technology Stack
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#system-architecture">
+<span class="md-ellipsis">
+      
+        System Architecture
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#project-structure">
+<span class="md-ellipsis">
+      
+        Project Structure
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#local-development-setup">
+<span class="md-ellipsis">
+      
+        Local Development Setup
+      
+    </span>
+</a>
+<nav aria-label="Local Development Setup" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#1-backend-service-configuration-python">
+<span class="md-ellipsis">
+      
+        1. Backend Service Configuration (Python)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#2-frontend-interface-configuration-node">
+<span class="md-ellipsis">
+      
+        2. Frontend Interface Configuration (Node)
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#backend-fastapi-deep-dive">
+<span class="md-ellipsis">
+      
+        Backend (FastAPI) Deep Dive
+      
+    </span>
+</a>
+<nav aria-label="Backend (FastAPI) Deep Dive" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#core-api-endpoints">
+<span class="md-ellipsis">
+      
+        Core API Endpoints:
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#architectural-rule">
+<span class="md-ellipsis">
+      
+        Architectural Rule:
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#frontend-react-deep-dive">
+<span class="md-ellipsis">
+      
+        Frontend (React) Deep Dive
+      
+    </span>
+</a>
+<nav aria-label="Frontend (React) Deep Dive" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#1-data-fetching-react-query">
+<span class="md-ellipsis">
+      
+        1. Data Fetching (React Query)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#2-ui-components-shadcntailwind">
+<span class="md-ellipsis">
+      
+        2. UI Components (Shadcn/Tailwind)
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#ai-integration-rag-pipeline">
+<span class="md-ellipsis">
+      
+        AI Integration &amp; RAG Pipeline
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#adding-new-features">
+<span class="md-ellipsis">
+      
+        Adding New Features
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../system_architecture/">
+<span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Table of contents" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#table-of-contents">
+<span class="md-ellipsis">
+      
+        Table of Contents
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#project-overview">
+<span class="md-ellipsis">
+      
+        Project Overview
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#technology-stack">
+<span class="md-ellipsis">
+      
+        Technology Stack
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#system-architecture">
+<span class="md-ellipsis">
+      
+        System Architecture
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#project-structure">
+<span class="md-ellipsis">
+      
+        Project Structure
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#local-development-setup">
+<span class="md-ellipsis">
+      
+        Local Development Setup
+      
+    </span>
+</a>
+<nav aria-label="Local Development Setup" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#1-backend-service-configuration-python">
+<span class="md-ellipsis">
+      
+        1. Backend Service Configuration (Python)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#2-frontend-interface-configuration-node">
+<span class="md-ellipsis">
+      
+        2. Frontend Interface Configuration (Node)
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#backend-fastapi-deep-dive">
+<span class="md-ellipsis">
+      
+        Backend (FastAPI) Deep Dive
+      
+    </span>
+</a>
+<nav aria-label="Backend (FastAPI) Deep Dive" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#core-api-endpoints">
+<span class="md-ellipsis">
+      
+        Core API Endpoints:
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#architectural-rule">
+<span class="md-ellipsis">
+      
+        Architectural Rule:
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#frontend-react-deep-dive">
+<span class="md-ellipsis">
+      
+        Frontend (React) Deep Dive
+      
+    </span>
+</a>
+<nav aria-label="Frontend (React) Deep Dive" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#1-data-fetching-react-query">
+<span class="md-ellipsis">
+      
+        1. Data Fetching (React Query)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#2-ui-components-shadcntailwind">
+<span class="md-ellipsis">
+      
+        2. UI Components (Shadcn/Tailwind)
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#ai-integration-rag-pipeline">
+<span class="md-ellipsis">
+      
+        AI Integration &amp; RAG Pipeline
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#adding-new-features">
+<span class="md-ellipsis">
+      
+        Adding New Features
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-content" data-md-component="content">
+<article class="md-content__inner md-typeset">
+<h1 id="legal-sage-ai-developer-documentation">Legal Sage AI - Developer Documentation</h1>
+<p>Welcome to the comprehensive developer documentation for <strong>Legal Sage AI</strong>. This guide provides an in-depth look into the project structure, technologies, architectural concepts, APIs, and guidelines for contributing to and extending the system.</p>
+<hr/>
+<h2 id="table-of-contents">Table of Contents</h2>
+<ol>
+<li><a href="#project-overview">Project Overview</a></li>
+<li><a href="#technology-stack">Technology Stack</a></li>
+<li><a href="#system-architecture">System Architecture</a></li>
+<li><a href="#project-structure">Project Structure</a></li>
+<li><a href="#local-development-setup">Local Development Setup</a></li>
+<li><a href="#backend-fastapi-deep-dive">Backend (FastAPI) Deep Dive</a></li>
+<li><a href="#frontend-react-deep-dive">Frontend (React) Deep Dive</a></li>
+<li><a href="#ai-integration--rag-pipeline">AI Integration &amp; RAG Pipeline</a></li>
+<li><a href="#adding-new-features">Adding New Features (Developer Guidelines)</a></li>
+</ol>
+<hr/>
+<h2 id="project-overview">Project Overview</h2>
+<p><strong>Legal Sage AI</strong> is an intelligent legal document analysis application leveraging Retrieval-Augmented Generation (RAG) and open-source local LLMs to assure complete data privacy and security.</p>
+<p><strong>Core Capabilities:</strong>
+- <strong>Document Ingestion:</strong> Submitting and parsing legal PDFs and Word documents.
+- <strong>AI Analytics:</strong> Automatically extracting actionable insights and structured summaries.
+- <strong>RAG Chat System:</strong> Querying massive, indexed legal documents in real-time.
+- <strong>Case Prediction:</strong> Evaluating factors for likely legal outcomes using deep learning and inference.</p>
+<hr/>
+<h2 id="technology-stack">Technology Stack</h2>
+<p>The platform embraces a modern, separation-of-concerns architecture between the Frontend and the Backend:</p>
+<p><strong>Frontend Ecosystem:</strong>
+- <strong>Framework:</strong> React 18 (TypeScript) via Vite for HMR and high-performance builds.
+- <strong>Styling:</strong> Tailwind CSS combined with Shadcn/UI (Radix primitives) for accessible components.
+- <strong>State &amp; Data Fetching:</strong> React Query (TanStack Query) for efficient caching and mutation handling.</p>
+<p><strong>Backend Ecosystem:</strong>
+- <strong>Framework:</strong> FastAPI / Python 3.10+ handling REST routes concurrently and generating async OpenAPI docs.
+- <strong>AI Orchestration:</strong> LangChain serving up templates, output parsers, and chains.
+- <strong>Vector Intelligence:</strong> ChromaDB for local embedding storage and high-speed similarity search.
+- <strong>Generative Models:</strong> Ollama interfacing local deployments of foundation models (e.g., Llama 3).</p>
+<p><strong>Infrastructure &amp; Auth:</strong>
+- <strong>Authentication:</strong> Supabase handles secure JWT tracking and user context.
+- <strong>Database:</strong> Supabase PostgreSQL manages application metadata state.</p>
+<hr/>
+<h2 id="system-architecture">System Architecture</h2>
+<p>The Legal Sage AI architecture is built into three well-defined layers: 
+1. <strong>Presentation Layer:</strong> State synchronization and rendering.
+2. <strong>Application Layer:</strong> Prompt orchestration and document processing.
+3. <strong>Data &amp; AI Infrastructure:</strong> High-dimensional vector storage and pure LLM inference.</p>
+<p><em>(Check out <code>system_architecture.md</code> in the root folder for a visual representation using Mermaid flowcharts).</em></p>
+<hr/>
+<h2 id="project-structure">Project Structure</h2>
+<p>A high-level view of where your logic lives:</p>
+<div class="highlight"><pre><span></span><code><a href="#__codelineno-0-1" id="__codelineno-0-1" name="__codelineno-0-1"></a>d:\legal project
+<a href="#__codelineno-0-2" id="__codelineno-0-2" name="__codelineno-0-2"></a>├── backend/                  # The Python FastAPI AI Service layer
+<a href="#__codelineno-0-3" id="__codelineno-0-3" name="__codelineno-0-3"></a>│   ├── main.py               # Main ASGI Server entrypoint and router
+<a href="#__codelineno-0-4" id="__codelineno-0-4" name="__codelineno-0-4"></a>│   ├── requirements.txt      # Python dependencies
+<a href="#__codelineno-0-5" id="__codelineno-0-5" name="__codelineno-0-5"></a>│   ├── venv/                 # Virtual environment
+<a href="#__codelineno-0-6" id="__codelineno-0-6" name="__codelineno-0-6"></a>│   └── sessions.json         # (Local) File-based tracking for testing
+<a href="#__codelineno-0-7" id="__codelineno-0-7" name="__codelineno-0-7"></a>├── legal-sage-ai/            # The React TypeScript Vite Application
+<a href="#__codelineno-0-8" id="__codelineno-0-8" name="__codelineno-0-8"></a>│   ├── src/                  # Core frontend source
+<a href="#__codelineno-0-9" id="__codelineno-0-9" name="__codelineno-0-9"></a>│   │   ├── components/       # Shadcn/UI building blocks and application widgets
+<a href="#__codelineno-0-10" id="__codelineno-0-10" name="__codelineno-0-10"></a>│   │   ├── hooks/            # Custom React Query data extractors
+<a href="#__codelineno-0-11" id="__codelineno-0-11" name="__codelineno-0-11"></a>│   │   ├── lib/              # Utility functions, supabase client wrappers
+<a href="#__codelineno-0-12" id="__codelineno-0-12" name="__codelineno-0-12"></a>│   │   └── App.tsx           # React Root Component
+<a href="#__codelineno-0-13" id="__codelineno-0-13" name="__codelineno-0-13"></a>│   ├── package.json          # Node dependencies
+<a href="#__codelineno-0-14" id="__codelineno-0-14" name="__codelineno-0-14"></a>│   ├── tsconfig.json         # TypeScript configurations
+<a href="#__codelineno-0-15" id="__codelineno-0-15" name="__codelineno-0-15"></a>│   └── vite.config.ts        # Vite build configurations
+<a href="#__codelineno-0-16" id="__codelineno-0-16" name="__codelineno-0-16"></a>├── README.md                 # Public high-level introduction
+<a href="#__codelineno-0-17" id="__codelineno-0-17" name="__codelineno-0-17"></a>└── DEVELOPER_GUIDE.md        # (You are here) Comprehensive dev documentation
+</code></pre></div>
+<hr/>
+<h2 id="local-development-setup">Local Development Setup</h2>
+<h3 id="1-backend-service-configuration-python">1. Backend Service Configuration (Python)</h3>
+<p>Requirements: <strong>Python 3.10+</strong> and <strong>Ollama</strong>.</p>
+<p>First, boot the local Ollama LLM service running on port <code>:11434</code>.
+Ensure you have the required open-source LLM model pulled via the Ollama CLI: <code>ollama run &lt;model-name&gt;</code></p>
+<div class="highlight"><pre><span></span><code><a href="#__codelineno-1-1" id="__codelineno-1-1" name="__codelineno-1-1"></a><span class="c1"># 1. Enter the backend directory</span>
+<a href="#__codelineno-1-2" id="__codelineno-1-2" name="__codelineno-1-2"></a><span class="nb">cd</span><span class="w"> </span>backend
+<a href="#__codelineno-1-3" id="__codelineno-1-3" name="__codelineno-1-3"></a>
+<a href="#__codelineno-1-4" id="__codelineno-1-4" name="__codelineno-1-4"></a><span class="c1"># 2. Spawn a local Python virtual environment</span>
+<a href="#__codelineno-1-5" id="__codelineno-1-5" name="__codelineno-1-5"></a>python<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>venv
+<a href="#__codelineno-1-6" id="__codelineno-1-6" name="__codelineno-1-6"></a>
+<a href="#__codelineno-1-7" id="__codelineno-1-7" name="__codelineno-1-7"></a><span class="c1"># 3. Activate the environment</span>
+<a href="#__codelineno-1-8" id="__codelineno-1-8" name="__codelineno-1-8"></a><span class="nb">source</span><span class="w"> </span>venv/bin/activate<span class="w">       </span><span class="c1"># Unix/MacOS</span>
+<a href="#__codelineno-1-9" id="__codelineno-1-9" name="__codelineno-1-9"></a>venv<span class="se">\S</span>cripts<span class="se">\a</span>ctivate<span class="w">          </span><span class="c1"># Windows</span>
+<a href="#__codelineno-1-10" id="__codelineno-1-10" name="__codelineno-1-10"></a>
+<a href="#__codelineno-1-11" id="__codelineno-1-11" name="__codelineno-1-11"></a><span class="c1"># 4. Install ML/Web Requirements</span>
+<a href="#__codelineno-1-12" id="__codelineno-1-12" name="__codelineno-1-12"></a>pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt
+<a href="#__codelineno-1-13" id="__codelineno-1-13" name="__codelineno-1-13"></a>
+<a href="#__codelineno-1-14" id="__codelineno-1-14" name="__codelineno-1-14"></a><span class="c1"># 5. Start the ASGI server directly utilizing asyncio/uvicorn under the hood</span>
+<a href="#__codelineno-1-15" id="__codelineno-1-15" name="__codelineno-1-15"></a>python<span class="w"> </span>main.py
+</code></pre></div>
+<blockquote>
+<p>The API mounts to <code>http://localhost:8000</code>. Full OpenAPI interactive documentation is generated automatically by FastAPI at <code>http://localhost:8000/docs</code>.</p>
+</blockquote>
+<h3 id="2-frontend-interface-configuration-node">2. Frontend Interface Configuration (Node)</h3>
+<p>Requirements: <strong>Node v18+</strong>.</p>
+<div class="highlight"><pre><span></span><code><a href="#__codelineno-2-1" id="__codelineno-2-1" name="__codelineno-2-1"></a><span class="c1"># 1. Enter the frontend directory</span>
+<a href="#__codelineno-2-2" id="__codelineno-2-2" name="__codelineno-2-2"></a><span class="nb">cd</span><span class="w"> </span>legal-sage-ai
+<a href="#__codelineno-2-3" id="__codelineno-2-3" name="__codelineno-2-3"></a>
+<a href="#__codelineno-2-4" id="__codelineno-2-4" name="__codelineno-2-4"></a><span class="c1"># 2. Install dependencies (React, TanStack, Tailwind, etc.)</span>
+<a href="#__codelineno-2-5" id="__codelineno-2-5" name="__codelineno-2-5"></a>npm<span class="w"> </span>install
+<a href="#__codelineno-2-6" id="__codelineno-2-6" name="__codelineno-2-6"></a>
+<a href="#__codelineno-2-7" id="__codelineno-2-7" name="__codelineno-2-7"></a><span class="c1"># 3. Ensure your local .env file matches dev expectations</span>
+<a href="#__codelineno-2-8" id="__codelineno-2-8" name="__codelineno-2-8"></a><span class="c1"># .env required: VITE_API_URL=http://localhost:8000, VITE_SUPABASE_*</span>
+<a href="#__codelineno-2-9" id="__codelineno-2-9" name="__codelineno-2-9"></a>
+<a href="#__codelineno-2-10" id="__codelineno-2-10" name="__codelineno-2-10"></a><span class="c1"># 4. Boot via Vite builder</span>
+<a href="#__codelineno-2-11" id="__codelineno-2-11" name="__codelineno-2-11"></a>npm<span class="w"> </span>run<span class="w"> </span>dev
+</code></pre></div>
+<hr/>
+<h2 id="backend-fastapi-deep-dive">Backend (FastAPI) Deep Dive</h2>
+<p>FastAPI is strictly typed and handles incoming logic via API Routes (<code>@app.post()</code>, <code>@app.get()</code>). </p>
+<h3 id="core-api-endpoints">Core API Endpoints:</h3>
+<ul>
+<li><code>POST /upload</code>: Invokes the <code>Document Processor</code> service using PyPDF or <code>docx2txt</code>. Handles asynchronous streams when chunking files.</li>
+<li><code>POST /analyze</code>: Reads the chunked file extracts and passes a summarization prompt to the LangChain orchestrator. </li>
+<li><code>POST /predict</code>: Pushes extracted case parameters through a zero-shot decision-making LLM agent to classify outcomes.</li>
+<li><code>POST /chat</code>: Highly dynamic RAG interface endpoint taking an arbitrary user prompt and returning LangChain's augmented generation payload.</li>
+</ul>
+<h3 id="architectural-rule">Architectural Rule:</h3>
+<ul>
+<li><strong>Dependency Injection:</strong> Use FastAPI dependency injection (<code>Depends()</code>) for authenticating tokens coming from the React client before exposing AI processing logic.</li>
+</ul>
+<hr/>
+<h2 id="frontend-react-deep-dive">Frontend (React) Deep Dive</h2>
+<p>The UI focuses on React server-state separation and declarative styling.</p>
+<h3 id="1-data-fetching-react-query">1. Data Fetching (React Query)</h3>
+<p>Do not use raw <code>useEffect</code> and <code>fetch</code> for data! Always implement asynchronous API calls utilizing <code>useMutation</code> and <code>useQuery</code> hooks. This handles loading states, error boundaries, and cache invalidation under the hood cleanly without component bloat.</p>
+<h3 id="2-ui-components-shadcntailwind">2. UI Components (Shadcn/Tailwind)</h3>
+<p>Legal Sage relies on Radix primitives surfaced via Shadcn/UI for absolute accessibility control. 
+- <strong>Rule of Thumb:</strong> Need a new button, dialog, or input form? Run the Shadcn CLI to inject it into <code>components/ui/</code> rather than building from scratch.
+- <strong>Styling:</strong> Limit styles mostly to inline utility classes from Tailwind.</p>
+<hr/>
+<h2 id="ai-integration-rag-pipeline">AI Integration &amp; RAG Pipeline</h2>
+<p>The RAG (Retrieval-Augmented Generation) pipeline consists of four major steps:
+1. <strong>Data Ingestion:</strong> Large documents are parsed into massive sets of small text chunks using LangChain text splitters.
+2. <strong>Embedding:</strong> The chunks use a highly-trained local embedding layer to convert text vectors dynamically.
+3. <strong>Indexing:</strong> Those vectors sit inside a partitioned <code>ChromaDB</code> collection. 
+4. <strong>Retrieval &amp; Inference:</strong> A user prompt triggers an immediate <code>similarity_search</code> in ChromaDB fetching the nearest neighbors (the contextual chunks) which are appended to a precise strict system prompt inside LangChain, finalizing the sequence by querying <code>Ollama</code> for a natural response.</p>
+<hr/>
+<h2 id="adding-new-features">Adding New Features</h2>
+<p>Follow this workflow when modifying Legal Sage:</p>
+<ol>
+<li><strong>API First:</strong> Always construct the backend Pydantic models for incoming responses, create the FastAPI route mapping the Pydantic classes, and manually test via <code>/docs</code>.</li>
+<li><strong>Update Client SDK:</strong> Update and export custom fetch wrapper functions from the frontend <code>/services/*</code> or generic <code>/lib</code> utilities.</li>
+<li><strong>Draft the UI:</strong> Scaffold components using Shadcn UI variables. Hook the component into React Query bindings <code>useMutation</code> pointing to your SDK wrapper. </li>
+<li><strong>End-to-End Test:</strong> Run Ollama and upload a complex legal document to watch the process execute.</li>
+</ol>
+</article>
+</div>
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+</div>
+</main>
+<footer class="md-footer">
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" rel="noopener" target="_blank">
+      Material for MkDocs
+    </a>
+</div>
+</div>
+</div>
+</footer>
+</div>
+<div class="md-dialog" data-md-component="dialog">
+<div class="md-dialog__inner md-typeset"></div>
+</div>
+<script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+<script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+<script src="https://unpkg.com/mermaid@10.6.1/dist/mermaid.min.js"></script>
+</body>
+</html>
